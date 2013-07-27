@@ -1,0 +1,64 @@
+package koba.lang;
+
+public abstract class BaseRandom implements Random{
+	/**
+		This method should generate an integer in range [-1<<31,(1<<31)-1](1L<<32L patterns).
+		Subclass of BaseRandom should override this method.
+	*/
+	protected abstract int next();
+	/**
+		This method returns an integer in range [0,|v|-1](|v| patterns, if v!=0), or any value of T (if v==0).
+	*/
+	public <T=byte,short,int,long>T nextValue(T v){
+		if(v==0){
+			return nextValue<T>();
+		}
+		if(v<0){
+			if(v==-v){//v==T.MIN_VALUE
+				return (T)(nextValue<T>()&~v);
+			}else{
+				v=-v;
+			}
+		}
+
+		assert v>=(T)1;
+
+		T res;
+		T val;
+		do{
+			res=nextValue<T>();
+			val=(T)(res%v);
+		}while((T)(res-val+(v-1))<(T)0);
+		return val;
+	}
+	private <T=byte,short,int,long> T nextValue(){
+		mif(T==long){//meta-if, compile-time if
+			int v0=next();
+			int v1=next();
+			return ((long)v1<<32L)|((long)v0&0xffff_ffffUL);
+		}
+		melse{
+			return (T)next();
+		}
+	}
+	/**
+		This method returns a double value in range [0.0,1.0). Note that this method will never return 1.0.
+	*/
+	public abstract double nextDouble(){
+		long value=next()&0xff_ff_ff_ffUL;//value is in [0,0xffff_ffff]
+		return value/0x1.0p32;
+	}
+	/**
+		Subclass can override this method. If this method is not overrided, this method does default operation(that is, does nothing.)
+	*/
+	public void setSeed(long seed){
+		//do nothing
+	}
+	/**
+		Subclass can override this method. If this method is not overrided, this method does default operation(that is, does nothing.)
+	*/
+	public abstract void setSeedArray(int[] array){
+		//do nothing
+	}
+
+}
