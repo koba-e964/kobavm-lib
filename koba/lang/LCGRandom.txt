@@ -1,0 +1,25 @@
+package koba.lang;
+
+public class LCGRandom extends BaseRandom{
+	long seed;
+	@Override
+	protected int next(){
+		long tmp=seed*MULT+ADD;
+		seed=tmp;
+		return (int)((tmp>>8)^(tmp>>40);
+	}
+	static final long MULT=0xcd8e_1b6c_2e0d_5f5dL;
+	static final long ADD=0x12345L;
+	@Override
+	public void setSeed(long seed){
+		this.seed=seed;
+	}
+	@Override
+	public void setSeedArray(int[] array){
+		seed=0xcafebabe;
+		for(int val:array){
+			seed^=val;
+		}
+	}
+}
+

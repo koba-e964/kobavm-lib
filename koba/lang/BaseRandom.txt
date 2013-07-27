@@ -35,7 +35,7 @@ public abstract class BaseRandom implements Random{
 		mif(T==long){//meta-if, compile-time if
 			int v0=next();
 			int v1=next();
-			return ((long)v1<<32L)|((long)v0&0xffff_ffffUL);
+			return ((long)v1<<32L)|((long)v0&0xffff_ffffL);
 		}
 		melse{
 			return (T)next();
@@ -45,7 +45,7 @@ public abstract class BaseRandom implements Random{
 		This method returns a double value in range [0.0,1.0). Note that this method will never return 1.0.
 	*/
 	public abstract double nextDouble(){
-		long value=next()&0xff_ff_ff_ffUL;//value is in [0,0xffff_ffff]
+		long value=next()&0xff_ff_ff_ffL;//value is in [0,0xffff_ffff]
 		return value/0x1.0p32;
 	}
 	/**
