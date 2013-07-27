@@ -1,0 +1,4 @@
+package koba.lang.marker;
+
+public marker Override{
+}
