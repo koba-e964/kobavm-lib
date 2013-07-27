@@ -1,7 +1,7 @@
 package koba.lang;
 
 public class LCGRandom extends BaseRandom{
-	long seed;
+	private long seed;
 	@Override
 	protected int next(){
 		long tmp=seed*MULT+ADD;
@@ -16,10 +16,23 @@ public class LCGRandom extends BaseRandom{
 	}
 	@Override
 	public void setSeedArray(int[] array){
-		seed=0xcafebabe;
+		long s=0xcafe_babeL;
 		for(int val:array){
-			seed^=val;
+			s^=s<<4;
+			s^=s>>>7;
+			s^=s<<10;
+			s^=s>>>19;
+			s^=s<<27;
+			s^=s>>>34;
+			s^=val;
 		}
+		this.seed=s;
+	}
+	public LCGRandom(long seed){
+		this.setSeed(seed);
+	}
+	public LCGRandom(){
+		this(System.getNanoTime());
 	}
 }
 
