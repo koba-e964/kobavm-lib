@@ -1,0 +1,63 @@
+package koba.lang;
+
+public static class HashUtil{
+	public static constexpr int hash32(bool val){
+		return val?1732:1221;
+	}
+	public static constexpr [T=byte,short,char,int] int hash32(T value){
+		return value;//widening cast
+	}
+	public static constexpr int hash32(long value){
+		return (int)(value^(value>>32L));
+	}
+	public static constexpr int hash32(float val){
+		return Float.floatToIntBits();
+	}
+	public static constexpr int hash32(double val){
+		return hash32(Double.doubleToLongBits(val));
+	}
+	public static constexpr long hash64(bool val){
+		return val?1732L:1221L;
+	}
+	public static constexpr [T=byte,short,char,int,long] long hash64(T value){
+		return value;//widening cast
+	}
+	public static constexpr long hash64(float val){
+		return Float.floatToIntBits();
+	}
+	public static constexpr long hash64(double val){
+		return Double.doubleToLongBits(val);
+	}
+	public static [T=bool,byte,short,char,int,long,float,double] int hash32(T[] array){
+		int sum=0;
+		for(T val:array){
+			sum<<=2;
+			sum^=hash32(val);
+		}
+		return sum;
+	}
+	public static <T> int hash32(T[] array){
+		int sum=0;
+		for(T val:array){
+			sum<<=2;
+			sum^=val==null?0:val.hash32();
+		}
+		return sum;
+	}
+	public static [T=bool,byte,short,char,int,long,float,double] long hash64(T[] array){
+		long sum=0;
+		for(T val:array){
+			sum<<=2;
+			sum^=hash64(val);
+		}
+		return sum;
+	}
+	public static <T> long hash64(T[] array){
+		long sum=0;
+		for(T val:array){
+			sum<<=2;
+			sum^=val==null?0:val.hash64();
+		}
+		return sum;
+	}
+}
