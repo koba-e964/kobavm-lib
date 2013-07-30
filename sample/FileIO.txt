@@ -1,0 +1,23 @@
+package sample;
+
+import koba.io.FileWriter;
+
+public class FileIO{
+	public FileIO(# String name){// #:immutable
+		FileWriter fw=new FileWriter(name);
+		fw.write("test".getBytes());
+		//fw.close();
+		//destructor of fw is called.
+	}
+	public static void main(String[] args){
+		String name;
+		if(args.length>=1){
+			//name=args[0];
+			name.set(args[0]);
+		}else{
+			//name=System.in.readLine();
+			name.set(System.in.readLine());
+		}
+		new FileIO(name);
+	}
+}
